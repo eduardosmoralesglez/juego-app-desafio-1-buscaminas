@@ -2,12 +2,12 @@ package es.puerto.juego1.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import es.puerto.juego1.model.BuscaminasModelo;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -19,14 +19,17 @@ public class JuegoController extends ControladorAbstracto {
     private GridPane tablero;
 
     @FXML
-    private Button botonRegresar;
+    private Button buttonVolver;
+
+    @FXML
+    private TextField textFieldPuntos;
 
     private BuscaminasModelo modelo;
     private boolean primerClick = true;
 
     public void initialize(URL url, ResourceBundle rb) {
         nuevoJuego();
-        tablero.getScene().getStylesheets().add(getClass().getResource("css-buscaminas.css").toExternalForm());
+        textFieldPuntos.setText(getUsuarioActivo().getPuntos().toString());
     }
 
     @FXML
@@ -40,14 +43,13 @@ public class JuegoController extends ControladorAbstracto {
         tablero.getChildren().clear();
         tablero.getRowConstraints().clear();
         tablero.getColumnConstraints().clear();
-
         for (int i = 0; i < modelo.getFilas(); i++) {
             for (int j = 0; j < modelo.getColumnas(); j++) {
                 StackPane celda = new StackPane();
                 celda.getStyleClass().add("celda");
                 celda.setPrefSize(30, 30);
-                final int fila = i;
-                final int columna = j;
+                int fila = i;
+                int columna = j;
                 celda.setOnMouseClicked(e -> manejarClick(e.getButton(), fila, columna));
                 tablero.add(celda, j, i);
             }
@@ -132,8 +134,12 @@ public class JuegoController extends ControladorAbstracto {
 
     private void comprobarEstadoJuego() {
         if (modelo.isJuegoPerdido()) {
+            getUsuarioActivo().setPuntos(getUsuarioActivo().getPuntos()-500);
+            textFieldPuntos.setText(getUsuarioActivo().getPuntos().toString());
             mostrarAlerta("¡Has perdido!", "Has pisado una mina", Alert.AlertType.ERROR);
         } else if (modelo.comprobarVictoria()) {
+            getUsuarioActivo().setPuntos(getUsuarioActivo().getPuntos()+500);
+            textFieldPuntos.setText(getUsuarioActivo().getPuntos().toString());
             mostrarAlerta("¡Victoria!", "¡Has ganado el juego!", Alert.AlertType.INFORMATION);
         }
     }
@@ -149,6 +155,11 @@ public class JuegoController extends ControladorAbstracto {
     @FXML
     public void salir() {
         System.exit(0);
+    }
+
+    @FXML
+    public void buttonVolver() {
+        openPantalla(buttonVolver, "perfil.fxml", "Perfil");
     }
 
 }

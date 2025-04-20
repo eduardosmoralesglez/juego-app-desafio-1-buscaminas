@@ -71,6 +71,9 @@ public class Usuario {
 
     public void setPuntos(Integer puntos) {
         this.puntos = puntos;
+        if (this.puntos < 0) {
+            this.puntos = 0;
+        }
     }
 
     public String getNivel() {

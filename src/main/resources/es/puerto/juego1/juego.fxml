@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.puerto.juego1.controller.JuegoController">
    <children>
@@ -19,5 +22,8 @@
          </menus>
       </MenuBar>
       <GridPane fx:id="tablero" layoutX="41.0" layoutY="72.0" style="-fx-background-color: #EEE; -fx-padding: 5;" />
+      <Button fx:id="buttonVolver" layoutX="496.0" layoutY="41.0" mnemonicParsing="false" onAction="#buttonVolver" text="Volver a Perfil" />
+      <Text layoutX="345.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Puntos:" />
+      <TextField fx:id="textFieldPuntos" editable="false" layoutX="396.0" layoutY="41.0" prefHeight="25.0" prefWidth="89.0" promptText="0000" />
    </children>
 </Pane>
