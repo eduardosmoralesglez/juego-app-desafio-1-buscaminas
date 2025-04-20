@@ -1,0 +1,154 @@
+package es.puerto.juego1.controller;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import es.puerto.juego1.model.BuscaminasModelo;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.input.MouseButton;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
+
+public class JuegoController extends ControladorAbstracto {
+
+    @FXML
+    private GridPane tablero;
+
+    @FXML
+    private Button botonRegresar;
+
+    private BuscaminasModelo modelo;
+    private boolean primerClick = true;
+
+    public void initialize(URL url, ResourceBundle rb) {
+        nuevoJuego();
+        tablero.getScene().getStylesheets().add(getClass().getResource("css-buscaminas.css").toExternalForm());
+    }
+
+    @FXML
+    public void nuevoJuego() {
+        modelo = new BuscaminasModelo(8, 8, 10);
+        primerClick = true;
+        crearTablero();
+    }
+
+    private void crearTablero() {
+        tablero.getChildren().clear();
+        tablero.getRowConstraints().clear();
+        tablero.getColumnConstraints().clear();
+
+        for (int i = 0; i < modelo.getFilas(); i++) {
+            for (int j = 0; j < modelo.getColumnas(); j++) {
+                StackPane celda = new StackPane();
+                celda.getStyleClass().add("celda");
+                celda.setPrefSize(30, 30);
+                final int fila = i;
+                final int columna = j;
+                celda.setOnMouseClicked(e -> manejarClick(e.getButton(), fila, columna));
+                tablero.add(celda, j, i);
+            }
+        }
+    }
+
+    private void manejarClick(MouseButton boton, int fila, int columna) {
+        if (modelo.isJuegoPerdido() || modelo.comprobarVictoria())
+            return;
+
+        if (boton == MouseButton.PRIMARY) {
+            if (primerClick) {
+                modelo.colocarMinas(fila, columna);
+                primerClick = false;
+            }
+            descubrirCelda(fila, columna);
+        } else if (boton == MouseButton.SECONDARY) {
+            alternarBandera(fila, columna);
+        }
+        actualizarVista();
+        comprobarEstadoJuego();
+    }
+
+    private void descubrirCelda(int fila, int columna) {
+        if (modelo.tieneBandera(fila, columna) || modelo.estaDescubierta(fila, columna))
+            return;
+        modelo.setDescubierta(fila, columna, true);
+
+        if (modelo.esMina(fila, columna)) {
+            modelo.setJuegoPerdido(true);
+        } else if (modelo.getAdyacentes(fila, columna) == 0) {
+            descubrirCeldasVacias(fila, columna);
+        }
+    }
+
+    private void descubrirCeldasVacias(int fila, int columna) {
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                int nuevaFila = fila + i;
+                int nuevaColumna = columna + j;
+                if (modelo.esPosicionValida(nuevaFila, nuevaColumna)
+                        && !modelo.estaDescubierta(nuevaFila, nuevaColumna)) {
+                    descubrirCelda(nuevaFila, nuevaColumna);
+                }
+            }
+        }
+    }
+
+    private void alternarBandera(int fila, int columna) {
+        if (!modelo.estaDescubierta(fila, columna)) {
+            modelo.setBandera(fila, columna, !modelo.tieneBandera(fila, columna));
+        }
+    }
+
+    private void actualizarVista() {
+        for (int i = 0; i < modelo.getFilas(); i++) {
+            for (int j = 0; j < modelo.getColumnas(); j++) {
+                StackPane celda = (StackPane) tablero.getChildren().get(i * modelo.getColumnas() + j);
+                celda.getStyleClass().removeAll("descubierta", "mina", "bandera");
+                celda.getChildren().clear();
+
+                if (modelo.estaDescubierta(i, j)) {
+                    celda.getStyleClass().add("descubierta");
+                    if (modelo.getAdyacentes(i, j) > 0) {
+                        Text texto = new Text(String.valueOf(modelo.getAdyacentes(i, j)));
+                        texto.getStyleClass().add("numero");
+                        texto.getStyleClass().add("numero-" + modelo.getAdyacentes(i, j)); 
+                        celda.getChildren().add(texto);
+                    }
+                } else if (modelo.tieneBandera(i, j)) {
+                    celda.getStyleClass().add("bandera");
+                    celda.getChildren().add(new Text("🚩"));
+                }
+
+                if (modelo.isJuegoPerdido() && modelo.esMina(i, j)) {
+                    celda.getStyleClass().add("mina");
+                    celda.getChildren().add(new Text("💣"));
+                }
+            }
+        }
+    }
+
+    private void comprobarEstadoJuego() {
+        if (modelo.isJuegoPerdido()) {
+            mostrarAlerta("¡Has perdido!", "Has pisado una mina", Alert.AlertType.ERROR);
+        } else if (modelo.comprobarVictoria()) {
+            mostrarAlerta("¡Victoria!", "¡Has ganado el juego!", Alert.AlertType.INFORMATION);
+        }
+    }
+
+    private void mostrarAlerta(String titulo, String mensaje, Alert.AlertType tipo) {
+        Alert alerta = new Alert(tipo);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(mensaje);
+        alerta.getButtonTypes().setAll(ButtonType.OK);
+        alerta.showAndWait();
+    }
+
+    @FXML
+    public void salir() {
+        System.exit(0);
+    }
+
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.puerto.juego1.controller.JuegoController">
+   <children>
+      <MenuBar layoutX="46.0" layoutY="41.0">
+         <menus>
+            <Menu text="Juego">
+               <items>
+                  <MenuItem onAction="#nuevoJuego" text="Nuevo juego" />
+                  <MenuItem onAction="#salir" text="Salir" />
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
+      <GridPane fx:id="tablero" layoutX="41.0" layoutY="72.0" style="-fx-background-color: #EEE; -fx-padding: 5;" />
+   </children>
+</Pane>

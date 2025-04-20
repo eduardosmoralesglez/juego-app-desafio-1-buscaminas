@@ -1,0 +1,14 @@
+es\puerto\juego1\controller\LoginController.class
+es\puerto\juego1\controller\RegistroController.class
+es\puerto\juego1\PrincipalApplication.class
+es\puerto\juego1\config\ConfigManager$ConfigProperties.class
+module-info.class
+es\puerto\juego1\controller\ControladorAbstracto.class
+es\puerto\juego1\model\abtrastas\Conexion.class
+es\puerto\juego1\model\UsuarioServiceModel.class
+es\puerto\juego1\model\Usuario.class
+es\puerto\juego1\controller\JuegoController.class
+es\puerto\juego1\controller\PerfilController.class
+es\puerto\juego1\config\ConfigManager.class
+es\puerto\juego1\model\BuscaminasModelo.class
+es\puerto\juego1\controller\RecuperarController.class
