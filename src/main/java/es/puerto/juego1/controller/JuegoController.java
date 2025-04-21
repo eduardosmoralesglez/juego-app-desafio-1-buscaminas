@@ -159,7 +159,7 @@ public class JuegoController extends ControladorAbstracto {
 
     @FXML
     public void buttonVolver() {
-        openPantalla(buttonVolver, "perfil.fxml", "Perfil");
+        openPantalla(buttonVolver, "perfil.fxml", "Perfil", getUsuarioActivo());
     }
 
 }
