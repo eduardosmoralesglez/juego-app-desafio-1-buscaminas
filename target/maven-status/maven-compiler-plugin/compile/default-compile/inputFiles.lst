@@ -1,6 +1,7 @@
 /media/dam/Elements SE/DAM/1º DAM/PRO/Juegos_APP/juego-app-desafio-1-buscaminas/src/main/java/module-info.java
 /media/dam/Elements SE/DAM/1º DAM/PRO/Juegos_APP/juego-app-desafio-1-buscaminas/src/main/java/es/puerto/juego1/model/abtrastas/Conexion.java
 /media/dam/Elements SE/DAM/1º DAM/PRO/Juegos_APP/juego-app-desafio-1-buscaminas/src/main/java/es/puerto/juego1/model/BuscaminasModelo.java
+/media/dam/Elements SE/DAM/1º DAM/PRO/Juegos_APP/juego-app-desafio-1-buscaminas/src/main/java/es/puerto/juego1/Game2.java
 /media/dam/Elements SE/DAM/1º DAM/PRO/Juegos_APP/juego-app-desafio-1-buscaminas/src/main/java/es/puerto/juego1/controller/ControladorAbstracto.java
 /media/dam/Elements SE/DAM/1º DAM/PRO/Juegos_APP/juego-app-desafio-1-buscaminas/src/main/java/es/puerto/juego1/controller/PerfilController.java
 /media/dam/Elements SE/DAM/1º DAM/PRO/Juegos_APP/juego-app-desafio-1-buscaminas/src/main/java/es/puerto/juego1/config/ConfigManager.java
@@ -8,6 +9,7 @@
 /media/dam/Elements SE/DAM/1º DAM/PRO/Juegos_APP/juego-app-desafio-1-buscaminas/src/main/java/es/puerto/juego1/model/Usuario.java
 /media/dam/Elements SE/DAM/1º DAM/PRO/Juegos_APP/juego-app-desafio-1-buscaminas/src/main/java/es/puerto/juego1/controller/LoginController.java
 /media/dam/Elements SE/DAM/1º DAM/PRO/Juegos_APP/juego-app-desafio-1-buscaminas/src/main/java/es/puerto/juego1/controller/RegistroController.java
+/media/dam/Elements SE/DAM/1º DAM/PRO/Juegos_APP/juego-app-desafio-1-buscaminas/src/main/java/es/puerto/juego1/Game2Copy.java
 /media/dam/Elements SE/DAM/1º DAM/PRO/Juegos_APP/juego-app-desafio-1-buscaminas/src/main/java/es/puerto/juego1/PrincipalApplication.java
 /media/dam/Elements SE/DAM/1º DAM/PRO/Juegos_APP/juego-app-desafio-1-buscaminas/src/main/java/es/puerto/juego1/controller/JuegoController.java
 /media/dam/Elements SE/DAM/1º DAM/PRO/Juegos_APP/juego-app-desafio-1-buscaminas/src/main/java/es/puerto/juego1/controller/RecuperarController.java

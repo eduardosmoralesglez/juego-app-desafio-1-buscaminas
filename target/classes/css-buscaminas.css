@@ -1,3 +1,8 @@
+.game-grid {
+    -fx-background-color: white ;
+    -fx-padding: 10 ;
+}
+
 .celda {
     -fx-border-color: #888;
     -fx-background-color: #b0c4de;
