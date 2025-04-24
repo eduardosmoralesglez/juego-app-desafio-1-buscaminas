@@ -1,12 +1,9 @@
 package es.puerto.juego1.controller;
 
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 import es.puerto.juego1.model.BuscaminasModelo;
 import javafx.fxml.FXML;
-import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -16,9 +13,6 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 
 public class JuegoController extends ControladorAbstracto {
@@ -52,37 +46,40 @@ public class JuegoController extends ControladorAbstracto {
          * tablero.getChildren().clear();
          * tablero.getRowConstraints().clear();
          * tablero.getColumnConstraints().clear();
-         * tablero.getStyleClass().add("css-buscaminas.css");
          * for (int i = 0; i < modelo.getFilas(); i++) {
          * for (int j = 0; j < modelo.getColumnas(); j++) {
-         * StackPane celda = new StackPane();
-         * celda.getStyleClass().add("celda");
-         * celda.setPrefSize(30, 30);
          * int fila = i;
          * int columna = j;
+         * Pane celda = new StackPane();
+         * celda.getStyleClass().add("celda");
+         * celda.setPrefSize(30, 30);
          * celda.setOnMouseClicked(e -> manejarClick(e.getButton(), fila, columna));
+         * celda.getStyleClass().add("game-tablero-cell");
+         * if (i == 0) {
+         * celda.getStyleClass().add("first-column");
+         * }
+         * if (j == 0) {
+         * celda.getStyleClass().add("first-row");
+         * }
          * tablero.add(celda, j, i);
          * }
          * }
          */
-        tablero.getStyleClass().add("game-tablero");
 
         for (int i = 0; i < modelo.getColumnas(); i++) {
             ColumnConstraints column = new ColumnConstraints(40);
             tablero.getColumnConstraints().add(column);
         }
-
         for (int i = 0; i < modelo.getFilas(); i++) {
             RowConstraints row = new RowConstraints(40);
             tablero.getRowConstraints().add(row);
         }
-
         for (int i = 0; i < modelo.getColumnas(); i++) {
             for (int j = 0; j < modelo.getFilas(); j++) {
+                int fila = i;
+                int columna = j;
                 Pane pane = new Pane();
-                pane.setOnMouseReleased(e -> {
-                    pane.getChildren().add();
-                });
+                pane.setOnMouseReleased(e -> manejarClick(e.getButton(), fila, columna));
                 pane.getStyleClass().add("game-tablero-cell");
                 if (i == 0) {
                     pane.getStyleClass().add("first-column");
@@ -92,16 +89,6 @@ public class JuegoController extends ControladorAbstracto {
                 }
                 tablero.add(pane, i, j);
             }
-
-        }
-        for (int i = 0; i < modelo.getColumnas(); i++) {
-
-            byte[] emojiByteCode = new byte[] { (byte) 0xF0, (byte) 0x9F, (byte) 0x98, (byte) 0x81 };
-            String emoji = new String(emojiByteCode, StandardCharsets.UTF_8);
-            Pane pane = new Pane(new Text(emoji));
-            tablero.add(pane, 5, i);
-            // celda.getChildren().add(new Text("🚩"));
-
         }
     }
 
@@ -156,7 +143,7 @@ public class JuegoController extends ControladorAbstracto {
     private void actualizarVista() {
         for (int i = 0; i < modelo.getFilas(); i++) {
             for (int j = 0; j < modelo.getColumnas(); j++) {
-                StackPane celda = (StackPane) tablero.getChildren().get(i * modelo.getColumnas() + j);
+                Pane celda = (Pane) tablero.getChildren().get(i * modelo.getColumnas() + j);
                 celda.getStyleClass().removeAll("descubierta", "mina", "bandera");
                 celda.getChildren().clear();
 

@@ -15,5 +15,4 @@ es/puerto/juego1/controller/RegistroController.class
 es/puerto/juego1/controller/JuegoController.class
 es/puerto/juego1/controller/ControladorAbstracto.class
 es/puerto/juego1/controller/LoginController.class
-es/puerto/juego1/controller/JuegoController$Anims.class
 es/puerto/juego1/Game2.class
