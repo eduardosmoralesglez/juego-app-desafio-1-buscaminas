@@ -2,6 +2,7 @@ package es.puerto.juego1.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
 import es.puerto.juego1.model.BuscaminasModelo;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -9,16 +10,27 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.text.Text;
+import javafx.scene.layout.StackPane;
 
+/**
+ * Clase controlador del juego Buscaminas
+ * 
+ * @author eduardoSerafin
+ * @version 1.0.0 200425
+ */
 public class JuegoController extends ControladorAbstracto {
+
+    private static final int codigoBandera = 0x1F6A9;
+    private static final String emojiBandera = new String(Character.toChars(codigoBandera));
+    private static final int codigoBomba = 0x1F4A3;
+    private static final String emojiBomba = new String(Character.toChars(codigoBomba));
 
     @FXML
     private GridPane tablero;
+
+    @FXML
+    private StackPane stackPaneContenedor;
 
     @FXML
     private Button buttonVolver;
@@ -34,68 +46,52 @@ public class JuegoController extends ControladorAbstracto {
         textFieldPuntos.setText(getUsuarioActivo().getPuntos().toString());
     }
 
+    /**
+     * Funcion para iniciar un nuevo juego
+     */
     @FXML
     public void nuevoJuego() {
-        modelo = new BuscaminasModelo(8, 8, 10);
         primerClick = true;
-        crearTablero();
+        stackPaneContenedor.getChildren().removeIf(node -> node instanceof GridPane);
+        modelo = new BuscaminasModelo(8, 8, 10);
+        tablero = crearTablero();
+        stackPaneContenedor.getChildren().add(tablero);
     }
 
-    private void crearTablero() {
-        /**
-         * tablero.getChildren().clear();
-         * tablero.getRowConstraints().clear();
-         * tablero.getColumnConstraints().clear();
-         * for (int i = 0; i < modelo.getFilas(); i++) {
-         * for (int j = 0; j < modelo.getColumnas(); j++) {
-         * int fila = i;
-         * int columna = j;
-         * Pane celda = new StackPane();
-         * celda.getStyleClass().add("celda");
-         * celda.setPrefSize(30, 30);
-         * celda.setOnMouseClicked(e -> manejarClick(e.getButton(), fila, columna));
-         * celda.getStyleClass().add("game-tablero-cell");
-         * if (i == 0) {
-         * celda.getStyleClass().add("first-column");
-         * }
-         * if (j == 0) {
-         * celda.getStyleClass().add("first-row");
-         * }
-         * tablero.add(celda, j, i);
-         * }
-         * }
-         */
-
-        for (int i = 0; i < modelo.getColumnas(); i++) {
-            ColumnConstraints column = new ColumnConstraints(40);
-            tablero.getColumnConstraints().add(column);
-        }
-        for (int i = 0; i < modelo.getFilas(); i++) {
-            RowConstraints row = new RowConstraints(40);
-            tablero.getRowConstraints().add(row);
-        }
+    /**
+     * Funcion para crear el tablero de juego
+     * 
+     * @return GridPane con el tablero
+     */
+    private GridPane crearTablero() {
+        GridPane gridtablero = new GridPane();
+        double celtaAncho = stackPaneContenedor.getWidth() / modelo.getColumnas();
+        double celdaAltura = stackPaneContenedor.getHeight() / modelo.getFilas();
+        double tamanioCelda = Math.min(celtaAncho, celdaAltura);
         for (int i = 0; i < modelo.getColumnas(); i++) {
             for (int j = 0; j < modelo.getFilas(); j++) {
                 int fila = i;
                 int columna = j;
-                Pane pane = new Pane();
-                pane.setOnMouseReleased(e -> manejarClick(e.getButton(), fila, columna));
-                pane.getStyleClass().add("game-tablero-cell");
-                if (i == 0) {
-                    pane.getStyleClass().add("first-column");
-                }
-                if (j == 0) {
-                    pane.getStyleClass().add("first-row");
-                }
-                tablero.add(pane, i, j);
+                Button boton = new Button();
+                boton.setPrefSize(tamanioCelda, tamanioCelda);
+                boton.getStyleClass().add("celda");
+                boton.setOnMouseReleased(e -> manejarClick(e.getButton(), fila, columna));
+                gridtablero.add(boton, i, j);
             }
         }
+        return gridtablero;
     }
 
+    /**
+     * Funcion para manejar los clicks del juego
+     * 
+     * @param boton   del raton
+     * @param fila    del tablero
+     * @param columna del tablero
+     */
     private void manejarClick(MouseButton boton, int fila, int columna) {
         if (modelo.isJuegoPerdido() || modelo.comprobarVictoria())
             return;
-
         if (boton == MouseButton.PRIMARY) {
             if (primerClick) {
                 modelo.colocarMinas(fila, columna);
@@ -109,11 +105,16 @@ public class JuegoController extends ControladorAbstracto {
         comprobarEstadoJuego();
     }
 
+    /**
+     * Funcion para descubrir las celdas
+     * 
+     * @param fila    del tablero
+     * @param columna del tablero
+     */
     private void descubrirCelda(int fila, int columna) {
         if (modelo.tieneBandera(fila, columna) || modelo.estaDescubierta(fila, columna))
             return;
         modelo.setDescubierta(fila, columna, true);
-
         if (modelo.esMina(fila, columna)) {
             modelo.setJuegoPerdido(true);
         } else if (modelo.getAdyacentes(fila, columna) == 0) {
@@ -121,6 +122,12 @@ public class JuegoController extends ControladorAbstracto {
         }
     }
 
+    /**
+     * Funcion para descubrir las celdas vacias
+     * 
+     * @param fila    del tablero
+     * @param columna del tablero
+     */
     private void descubrirCeldasVacias(int fila, int columna) {
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
@@ -134,40 +141,44 @@ public class JuegoController extends ControladorAbstracto {
         }
     }
 
+    /**
+     * Funcion para poner o quitar vandera
+     * 
+     * @param fila    del tablero
+     * @param columna del tablero
+     */
     private void alternarBandera(int fila, int columna) {
         if (!modelo.estaDescubierta(fila, columna)) {
             modelo.setBandera(fila, columna, !modelo.tieneBandera(fila, columna));
         }
     }
 
+    /**
+     * Funcion para actualizar el tablero
+     */
     private void actualizarVista() {
         for (int i = 0; i < modelo.getFilas(); i++) {
             for (int j = 0; j < modelo.getColumnas(); j++) {
-                Pane celda = (Pane) tablero.getChildren().get(i * modelo.getColumnas() + j);
+                Button celda = (Button) tablero.getChildren().get(i * modelo.getColumnas() + j);
                 celda.getStyleClass().removeAll("descubierta", "mina", "bandera");
-                celda.getChildren().clear();
-
                 if (modelo.estaDescubierta(i, j)) {
-                    celda.getStyleClass().add("descubierta");
                     if (modelo.getAdyacentes(i, j) > 0) {
-                        Text texto = new Text(String.valueOf(modelo.getAdyacentes(i, j)));
-                        texto.getStyleClass().add("numero");
-                        texto.getStyleClass().add("numero-" + modelo.getAdyacentes(i, j));
-                        celda.getChildren().add(texto);
+                        String texto = new String(String.valueOf(modelo.getAdyacentes(i, j)));
+                        celda.setText(texto);
                     }
                 } else if (modelo.tieneBandera(i, j)) {
-                    celda.getStyleClass().add("bandera");
-                    celda.getChildren().add(new Text("🚩"));
+                    celda.setText(emojiBandera);
                 }
-
                 if (modelo.isJuegoPerdido() && modelo.esMina(i, j)) {
-                    celda.getStyleClass().add("mina");
-                    celda.getChildren().add(new Text("💣"));
+                    celda.setText(emojiBomba);
                 }
             }
         }
     }
 
+    /**
+     * Funcion para comprobar el estado del juego
+     */
     private void comprobarEstadoJuego() {
         if (modelo.isJuegoPerdido()) {
             getUsuarioActivo().setPuntos(getUsuarioActivo().getPuntos() - 500);
@@ -180,6 +191,13 @@ public class JuegoController extends ControladorAbstracto {
         }
     }
 
+    /**
+     * Funcion para mostrar pantallas de notificacion
+     * 
+     * @param titulo  titulo de la pantalla
+     * @param mensaje mensaje de la pantalla
+     * @param tipo    de alerta
+     */
     private void mostrarAlerta(String titulo, String mensaje, Alert.AlertType tipo) {
         Alert alerta = new Alert(tipo);
         alerta.setTitle(titulo);
@@ -188,11 +206,17 @@ public class JuegoController extends ControladorAbstracto {
         alerta.showAndWait();
     }
 
+    /**
+     * Funcion para cerrar la aplicación
+     */
     @FXML
     public void salir() {
         System.exit(0);
     }
 
+    /**
+     * Funcion para volver al perfil
+     */
     @FXML
     public void buttonVolver() {
         openPantalla(buttonVolver, "perfil.fxml", "Perfil", getUsuarioActivo());

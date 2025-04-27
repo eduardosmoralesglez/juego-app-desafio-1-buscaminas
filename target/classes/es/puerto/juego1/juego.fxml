@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Text?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.puerto.juego1.controller.JuegoController">
@@ -21,9 +22,13 @@
             </Menu>
          </menus>
       </MenuBar>
-      <GridPane fx:id="tablero" gridLinesVisible="true" layoutX="41.0" layoutY="72.0" style="-fx-background-color: #EEE; -fx-padding: 5 -fx-background-fill: black, white ;       -fx-background-insets: 0, 0 1 1 0 ;" />
       <Button fx:id="buttonVolver" layoutX="477.0" layoutY="42.0" mnemonicParsing="false" onAction="#buttonVolver" text="Volver a Perfil" />
       <Text layoutX="326.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Puntos:" />
       <TextField fx:id="textFieldPuntos" editable="false" layoutX="377.0" layoutY="42.0" prefHeight="25.0" prefWidth="89.0" promptText="0000" />
+      <StackPane fx:id="stackPaneContenedor" layoutX="46.0" layoutY="86.0" prefHeight="300.0" prefWidth="500.0">
+         <children>
+            <GridPane fx:id="tablero" gridLinesVisible="true" />
+         </children>
+      </StackPane>
    </children>
 </Pane>

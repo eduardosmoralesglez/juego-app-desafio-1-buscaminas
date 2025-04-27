@@ -16,7 +16,11 @@ import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-
+/**
+ * Clase Abastracta de los Controladores
+ * @author eduardoSerafin
+ * @version 1.0.0 200425
+ */
 public class ControladorAbstracto {
 
     static final String PATH_DB = "src/main/resources/UsuariosDB.db";
@@ -73,6 +77,12 @@ public class ControladorAbstracto {
         return this.usuarioServiceModel;
     }
 
+    /**
+     * Funcion para cargar los idiomas
+     * @param nombreFichero String con el nombre del fichero
+     * @param idioma String con las siglas del idioma
+     * @return Properties
+     */
     public Properties loadIdioma(String nombreFichero, String idioma) {
         Properties properties = new Properties();
 
@@ -100,6 +110,9 @@ public class ControladorAbstracto {
         return properties;
     }
 
+    /**
+     * Funcion para cambiar los idiomas
+     */
     public void cambiarIdioma() {
         if (textUsuario != null) {
             textUsuario.setText(ConfigManager.ConfigProperties.getProperty("textUsuario"));
@@ -121,6 +134,12 @@ public class ControladorAbstracto {
         }
     }
 
+    /**
+     * Funcion generica para abrir una nueva pantalla
+     * @param boton
+     * @param fxml
+     * @param tituloDePagina
+     */
     @FXML
     protected void openPantalla(Button boton, String fxml, String tituloDePagina) {
         if (boton == null || fxml == null || fxml.isEmpty() || tituloDePagina == null || tituloDePagina.isEmpty()) {
@@ -138,6 +157,13 @@ public class ControladorAbstracto {
         }
     }
 
+    /**
+     * Funcion generica para abrir 
+     * @param boton
+     * @param fxml
+     * @param tituloDePagina
+     * @param usuario
+     */
     @FXML
     protected void openPantalla(Button boton, String fxml, String tituloDePagina, Usuario usuario) {
         if (boton == null || fxml == null || fxml.isEmpty() || tituloDePagina == null || tituloDePagina.isEmpty()
